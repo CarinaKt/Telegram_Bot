@@ -13,9 +13,10 @@ public class Bot extends TelegramLongPollingBot {
   private Chats chat;
   private Stocks stock;
 
+  // TODO: Errormessages to user
+  // TODO: sendMessage in own method
   public Bot(String botName, Chats chat, Stocks stock) {
 
-    
     super(System.getenv("BOT_TOKEN"));
     this.botName = botName;
     this.chat = chat;
@@ -60,6 +61,11 @@ public class Bot extends TelegramLongPollingBot {
         }
       } else if (messageText.equalsIgnoreCase("rm")) {
 
+        String stockSymbol = messageText.toUpperCase().replaceAll("RM", "").replace("\\", "").strip();
+        this.stock.remove(stockSymbol);
+
+        sendMessage.setText("Removed " + stock + " from watch list");
+
         try {
           execute(sendMessage);
         } catch (TelegramApiException e) {
@@ -81,9 +87,11 @@ public class Bot extends TelegramLongPollingBot {
   }
 
   public void sendMessage(String messagen, String chat_id) {
+
     SendMessage sendMessage = new SendMessage();
     sendMessage.setChatId(chat_id);
     sendMessage.setText(messagen);
+    
     try {
       execute(sendMessage); // Sending our message object to user
     } catch (TelegramApiException e) {

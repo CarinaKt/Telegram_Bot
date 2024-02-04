@@ -10,7 +10,7 @@ public class Chats {
 
     public void add( String name, String id ){
 
-        if (!inArray(id)){
+        if (!exists(id)){
             // create a new array with one extra element
             Chat[] newChatIDs = new Chat[chats.length + 1];
 
@@ -25,7 +25,7 @@ public class Chats {
         }
     }
 
-    private boolean inArray(String id){
+    private boolean exists(String id){
 
         for (Chat chat : chats) {
             String cid = chat.getId();
