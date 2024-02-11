@@ -1,24 +1,19 @@
 package telegram_bot;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
+import javax.sql.DataSource;
+import org.postgresql.ds.PGSimpleDataSource;
 
 public class DB {
-    public static Connection connect() throws SQLException {
+                
+    static DataSource createDataSource() {
+        // Get database credentials from DatabaseConfig class
+        String jdbcUrl = DatabaseConfig.getDbUrl();
+        String user = DatabaseConfig.getDbUsername();
+        String password = DatabaseConfig.getDbPassword();
 
-        try {
-            // Get database credentials from DatabaseConfig class
-            String jdbcUrl = DatabaseConfig.getDbUrl();
-            String user = DatabaseConfig.getDbUsername();
-            String password = DatabaseConfig.getDbPassword();
-
-            // Open a connection
-            return DriverManager.getConnection(jdbcUrl, user, password);
-
-        } catch (SQLException  e) {
-            System.err.println(e.getMessage());
-            return null;
-        }
+        final String url = jdbcUrl + "?user=" + user + "&password=" + password;
+        final PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        dataSource.setUrl(url);
+        return dataSource;
     }
 }

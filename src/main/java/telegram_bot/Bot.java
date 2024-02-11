@@ -4,23 +4,19 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import telegram_bot.Objects.Chats;
-import telegram_bot.Objects.Stocks;
 
 public class Bot extends TelegramLongPollingBot {
 
   private String botName;
-  private Chats chat;
-  private Stocks stock;
+  private DBOperator db;
 
   // TODO: Errormessages to user
   // TODO: sendMessage in own method
-  public Bot(String botName, Chats chat, Stocks stock) {
+  public Bot(String botName, DBOperator dbOperator) {
 
     super(System.getenv("BOT_TOKEN"));
     this.botName = botName;
-    this.chat = chat;
-    this.stock = stock;
+    this.db = dbOperator;
   }
 
   @Override
@@ -38,7 +34,8 @@ public class Bot extends TelegramLongPollingBot {
 
       if (messageText.equalsIgnoreCase("start")) {
 
-        this.chat.add(messageText, chatId);
+        // this.chat.add(messageText, chatId);
+        DBOperator.insertChats(name, Integer.parseInt(chatId));
 
         sendMessage.setText("Hello " + name + ", added your ID: " + chatId + " to the Brodcast");
 
@@ -50,7 +47,8 @@ public class Bot extends TelegramLongPollingBot {
       } else if (messageText.contains("add")) {
 
         String stockSymbol = messageText.toUpperCase().replaceAll("ADD", "").replace("\\", "").strip();
-        this.stock.add(stockSymbol);
+        // this.stock.add(stockSymbol);
+        DBOperator.insertStock(stockSymbol);
 
         sendMessage.setText("Added " + stockSymbol + " to watch list");
 
@@ -62,9 +60,10 @@ public class Bot extends TelegramLongPollingBot {
       } else if (messageText.equalsIgnoreCase("rm")) {
 
         String stockSymbol = messageText.toUpperCase().replaceAll("RM", "").replace("\\", "").strip();
-        this.stock.remove(stockSymbol);
+        // this.stock.remove(stockSymbol);
+        DBOperator.removeStock(stockSymbol);
 
-        sendMessage.setText("Removed " + stock + " from watch list");
+        sendMessage.setText("Removed " + stockSymbol + " from watch list");
 
         try {
           execute(sendMessage);
@@ -73,7 +72,8 @@ public class Bot extends TelegramLongPollingBot {
         }
       } else if (messageText.equalsIgnoreCase("stop")) {
 
-        chat.remove(chatId);
+        // chat.remove(chatId);
+        DBOperator.removeChats(Integer.parseInt(chatId));
 
         sendMessage.setText("Removed your ID: " + chatId );
 
@@ -101,13 +101,13 @@ public class Bot extends TelegramLongPollingBot {
 
   @Override
   public String getBotUsername() {
-    // Return bot username
+    
     return this.botName;
   }
 
   @Override
   public String getBotToken() {
-    // Return bot token from BotFather
+    
     return System.getenv("BOT_TOKEN");
   }
 }
