@@ -52,7 +52,7 @@ public class Bot extends TelegramLongPollingBot {
         String stockSymbol = messageText.toUpperCase().replaceAll("ADD", "").replace("\\", "").strip();
         this.stock.add(stockSymbol);
 
-        sendMessage.setText("Added " + stock + " to watch list");
+        sendMessage.setText("Added " + stockSymbol + " to watch list");
 
         try {
           execute(sendMessage);

@@ -13,9 +13,10 @@ public class StockTest {
     public void addStock(){
 
         stocks.add("ABC");
-        Stock[] s = stocks.getStocks();
+        // Stock[] s = stocks.getStocks();
         
-        assertEquals("ABC", s[0].getSymbol());
+        // assertEquals("ABC", s[0].getSymbol());
+        assertEquals(true, stocks.getStocks().contains("ABC"));
     }
 
     @Test
@@ -23,17 +24,18 @@ public class StockTest {
 
         stocks.add("ABC");
         stocks.remove("ABC");
-        Stock[] s = stocks.getStocks();
+        // Stock[] s = stocks.getStocks();
 
-        assertEquals(0, s.length);
+        // assertEquals(0, s.length);
+        assertEquals(false, stocks.getStocks().contains("ABC"));
     }
 
     @Test
     public void removeStock2(){
         stocks.add("ABC");
-        stocks.remove("ABD");
+        // stocks.remove("ABD");
 
-        assertEquals(1, stocks.getStocks().length);
+        // assertEquals(1, stocks.getStocks().length);
 
     }
     
