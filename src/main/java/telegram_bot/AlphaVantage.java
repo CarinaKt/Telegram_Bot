@@ -9,33 +9,39 @@ import java.net.URL;
 import java.util.Properties;
 
 public class AlphaVantage {
+
     InputStream inputStream;
     Properties prop = new Properties();
     String propFileName = "config.properties";
 
+    public AlphaVantage() {
 
-    public AlphaVantage(){
         try {
+
             inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+
             if (inputStream != null) {
                 prop.load(inputStream);
+
             } else {
                 throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
             }
+
             inputStream.close();
-        }catch(Exception e){
+            
+        } catch (Exception e) {
             System.out.println("Exception: " + e);
-        } 
+        }
     }
 
-    public String kurs(String symbol ) {
+    public String kurs(String symbol) {
         String price = "";
-    
+
         try {
             String apiKey = prop.getProperty("API_KEY");
             // Example: MBG.DEX = Mercedes Benz Group AG XETRA
             // ETG = Envitec
-            // String symbol = "ETG"; // MSCI World ETF symbol
+            // MSCI World ETF symbol = "EUNL"
             String function = "GLOBAL_QUOTE";
             String urlString = "https://www.alphavantage.co/query?" +
                     "function=" + function + "&" +
@@ -53,15 +59,15 @@ public class AlphaVantage {
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
             String line;
-            while((line = br.readLine()) != null){
-                if (line.contains("05. price")){
+            while ((line = br.readLine()) != null) {
+                if (line.contains("05. price")) {
                     price = line;
                 }
             }
-            
+
             price = price.replaceAll("[\"\\,]", "").replace("05.", "");
             price = symbol + " " + price + "€";
-            
+
             connection.disconnect();
 
             System.out.println(price);

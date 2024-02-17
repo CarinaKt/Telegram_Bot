@@ -35,7 +35,7 @@ public class Bot extends TelegramLongPollingBot {
       if (messageText.equalsIgnoreCase("start")) {
 
         // this.chat.add(messageText, chatId);
-        DBOperator.insertChats(name, Integer.parseInt(chatId));
+        db.insertChats(name, Integer.parseInt(chatId));
 
         sendMessage.setText("Hello " + name + ", added your ID: " + chatId + " to the Brodcast");
 
@@ -48,7 +48,7 @@ public class Bot extends TelegramLongPollingBot {
 
         String stockSymbol = messageText.toUpperCase().replaceAll("ADD", "").replace("\\", "").strip();
         // this.stock.add(stockSymbol);
-        DBOperator.insertStock(stockSymbol);
+        db.insertStock(stockSymbol);
 
         sendMessage.setText("Added " + stockSymbol + " to watch list");
 
@@ -61,7 +61,7 @@ public class Bot extends TelegramLongPollingBot {
 
         String stockSymbol = messageText.toUpperCase().replaceAll("RM", "").replace("\\", "").strip();
         // this.stock.remove(stockSymbol);
-        DBOperator.removeStock(stockSymbol);
+        db.removeStock(stockSymbol);
 
         sendMessage.setText("Removed " + stockSymbol + " from watch list");
 
@@ -73,9 +73,9 @@ public class Bot extends TelegramLongPollingBot {
       } else if (messageText.equalsIgnoreCase("stop")) {
 
         // chat.remove(chatId);
-        DBOperator.removeChats(Integer.parseInt(chatId));
+        db.removeChats(Integer.parseInt(chatId));
 
-        sendMessage.setText("Removed your ID: " + chatId );
+        sendMessage.setText("Removed your ID: " + chatId);
 
         try {
           execute(sendMessage);
@@ -91,7 +91,7 @@ public class Bot extends TelegramLongPollingBot {
     SendMessage sendMessage = new SendMessage();
     sendMessage.setChatId(chat_id);
     sendMessage.setText(messagen);
-    
+
     try {
       execute(sendMessage); // Sending our message object to user
     } catch (TelegramApiException e) {
@@ -101,13 +101,13 @@ public class Bot extends TelegramLongPollingBot {
 
   @Override
   public String getBotUsername() {
-    
+
     return this.botName;
   }
 
   @Override
   public String getBotToken() {
-    
+
     return System.getenv("BOT_TOKEN");
   }
 }
