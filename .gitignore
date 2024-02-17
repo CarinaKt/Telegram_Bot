@@ -1,4 +1,4 @@
 .env
 target/*
-src/main/resources/config/*
 .config
+src/main/resources/*
