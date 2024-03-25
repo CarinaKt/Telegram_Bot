@@ -141,7 +141,7 @@ public class DBOperator {
             logger.info("deleted " + deletedRows + " rows");
 
         } catch (SQLException e) {
-            logger.info("Connection failed: " + e);
+            logger.info("Failed: " + e);
             System.err.println(e.getMessage());
         }
 

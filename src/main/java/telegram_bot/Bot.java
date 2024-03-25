@@ -34,7 +34,6 @@ public class Bot extends TelegramLongPollingBot {
 
       if (messageText.equalsIgnoreCase("start")) {
 
-        // this.chat.add(messageText, chatId);
         db.insertChats(name, Integer.parseInt(chatId));
 
         sendMessage.setText("Hello " + name + ", added your ID: " + chatId + " to the Brodcast");
@@ -45,9 +44,8 @@ public class Bot extends TelegramLongPollingBot {
           e.printStackTrace();
         }
       } else if (messageText.contains("add")) {
-
+        
         String stockSymbol = messageText.toUpperCase().replaceAll("ADD", "").replace("\\", "").strip();
-        // this.stock.add(stockSymbol);
         db.insertStock(stockSymbol);
 
         sendMessage.setText("Added " + stockSymbol + " to watch list");
@@ -57,10 +55,9 @@ public class Bot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
           e.printStackTrace();
         }
-      } else if (messageText.equalsIgnoreCase("rm")) {
+      } else if (messageText.contains("rm")) {
 
         String stockSymbol = messageText.toUpperCase().replaceAll("RM", "").replace("\\", "").strip();
-        // this.stock.remove(stockSymbol);
         db.removeStock(stockSymbol);
 
         sendMessage.setText("Removed " + stockSymbol + " from watch list");
@@ -72,7 +69,6 @@ public class Bot extends TelegramLongPollingBot {
         }
       } else if (messageText.equalsIgnoreCase("stop")) {
 
-        // chat.remove(chatId);
         db.removeChats(Integer.parseInt(chatId));
 
         sendMessage.setText("Removed your ID: " + chatId);

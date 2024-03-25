@@ -66,7 +66,7 @@ public class AlphaVantage {
             }
 
             price = price.replaceAll("[\"\\,]", "").replace("05.", "");
-            price = symbol + " " + price + "€";
+            price = symbol + " " + price + "\u20AC";
 
             connection.disconnect();
 
